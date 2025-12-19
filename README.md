@@ -259,7 +259,7 @@ Astral proves that true innovation lies not in replacing everything, but in **in
 ```
 +-----------------------------------------------------------+
 |                    Astral Control Plane                   |
-|        API (Spring Boot) • RBAC • Audit • Approvals        |
+|        API (Spring Boot) • RBAC • Audit • Approvals       |
 +-------------------------------+---------------------------+
                                 |
                                 v
@@ -270,14 +270,14 @@ Astral proves that true innovation lies not in replacing everything, but in **in
                                 |
                                 v
 +-----------------------------------------------------------------------+
-|        Converged Infrastructure Fabric (Single Logical Domain)          |
+|        Converged Infrastructure Fabric (Single Logical Domain)        |
 |  Network • Firewall • Identity • DNS                                  |
 +-----------------------------------------------------------------------+
                                 |
                                 v
 +-----------------------------------------------------------------------+
 |         Compute & Containers Runtime (HCI Node Runtime)                |
-|      KVM / libvirt • OCI Containers • Snapshots                         |
+|      KVM / libvirt • OCI Containers • Snapshots                        |
 +-----------------------------------------------------------------------+
 
 (All components run on the same converged HCI node)

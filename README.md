@@ -251,3 +251,159 @@ It restores infrastructure to what it should be:
 * Engineer-operated
 
 Astral proves that true innovation lies not in replacing everything, but in **integrating proven systems with discipline, clarity and intent**.
+
+---
+
+## High-Level Architecture Diagram
+
+```
++-----------------------------------------------------------+
+|                    Astral Control Plane                   |
+|        API (Spring Boot) • RBAC • Audit • Approvals        |
++-------------------------------+---------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+|            Core Reconciliation Engine (Python Control Core)            |
+|  Intents • Desired State • Validation • Diff • Apply • Rollback        |
++-----------------------------------------------------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+|        Converged Infrastructure Fabric (Single Logical Domain)          |
+|  Network • Firewall • Identity • DNS                                  |
++-----------------------------------------------------------------------+
+                                |
+                                v
++-----------------------------------------------------------------------+
+|         Compute & Containers Runtime (HCI Node Runtime)                |
+|      KVM / libvirt • OCI Containers • Snapshots                         |
++-----------------------------------------------------------------------+
+
+(All components run on the same converged HCI node)
+```
+
+---
+
+## Operational Model
+
+Astral is designed to be operated **without a graphical interface**.
+
+Primary interaction methods:
+
+* CLI tools
+* Declarative intent files
+* API-driven automation
+
+This is intentional.
+
+Astral assumes operators understand infrastructure and require **clarity, predictability and control**, not abstraction layers that hide state.
+
+---
+
+## Failure Modes & Degraded Operation
+
+Astral is designed to degrade safely.
+
+If optional components fail:
+
+* Control plane API unavailable → no changes applied, runtime continues
+* Reconciliation engine stopped → last committed state remains enforced
+* Database unavailable → configuration frozen, workloads continue
+* CELESTE unavailable → AI, data lake enrichment and suggestions disabled
+
+Manual operation is always possible.
+
+---
+
+## Scope
+
+Astral explicitly **focuses on core infrastructure**:
+
+* Compute (VMs and system containers)
+* Network, firewall and routing
+* Identity and DNS
+* Storage replication
+* Audit and observability
+
+Astral does **not** aim to be:
+
+* A PaaS
+* A Kubernetes distribution
+* A cloud provider abstraction layer
+
+Those systems may run *on* Astral, but are not part of Astral itself.
+
+---
+
+## Non-Goals
+
+To preserve stability and clarity, Astral explicitly avoids:
+
+* Hidden automation
+* Self-modifying infrastructure
+* Auto-remediation without approval
+* UI-driven configuration state
+
+If a feature reduces determinism, it is rejected.
+
+---
+
+## Project Status
+
+Astral HCI-NGFW is in **active early development**.
+
+Current focus:
+
+* Control plane contracts
+* Intent schema definition
+* Reconciliation engine foundations
+* Deterministic networking and firewall enforcement
+
+APIs, schemas and internal structures are expected to evolve.
+
+---
+
+## Repository Structure (Planned)
+
+```
+astral/
+├── control-plane/        # API, RBAC, approvals, audit
+├── reconciler/           # Python reconciliation engine
+├── fabric/               # Network, firewall, identity, DNS integration
+├── storage/              # DRBD orchestration
+├── runtime/              # KVM and container runtime integration
+├── packages/             # Optional extensions
+├── docs/                 # Architecture and intent documentation
+└── tools/                # CLI and operator utilities
+```
+
+---
+
+## Relationship with CELESTE
+
+CELESTE is developed in a **separate repository**.
+
+Astral:
+
+* Does not embed CELESTE
+* Does not require CELESTE
+* Does not trust CELESTE as authoritative
+
+CELESTE interacts with Astral only through explicit, versioned contracts.
+
+---
+
+## Final Statement
+
+Astral HCI-NGFW is not built to chase trends.
+
+It is built to:
+
+* Be understood
+* Be audited
+* Be operated under pressure
+* Survive component failure
+* Remain free and defensible
+
+Astral is infrastructure for engineers who value **control over convenience**.

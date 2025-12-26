@@ -1,368 +1,290 @@
-Astral HV-NGFW - Documento de Referências e Atualizações
-Documento Vivo - Versão 1.1 - Última atualização: Novembro 2024
-📋 SOBRE ESTE DOCUMENTO
-Este documento serve como referência técnica central e registro de atualizações do projeto Astral HV-NGFW. Em vez de publicar múltiplos papers durante o desenvolvimento, utilizamos este documento único e versionado para:
+# Astral HV-NGFW – Reference and Updates Document  
+Living Document – Version 1.1 – Last updated: November 2024
 
-Manter um registro histórico das decisões arquiteturais
+---
 
-Documentar progresso entre commits significativos
+## 📋 ABOUT THIS DOCUMENT
 
-Servir como referência para colaboradores e interessados
+This document serves as the central technical reference and changelog for the **Astral HV-NGFW** project. Instead of publishing multiple papers during development, we maintain this single, versioned document to:
 
-Evitar fragmentação da documentação técnica
+- Preserve a historical record of architectural decisions  
+- Document progress between significant commits  
+- Serve as a reference for contributors and stakeholders  
+- Avoid fragmentation of technical documentation  
 
-⚠️ AVISO IMPORTANTE: Este é um documento de atualização em desenvolvimento. Todas as ideias, especificações e decisões estão sujeitas a mudanças sem aviso prévio. A arquitetura pode evoluir conforme o desenvolvimento progride.
+> ⚠️ **IMPORTANT NOTICE**: This is a living development document. All ideas, specifications, and decisions are subject to change without notice. The architecture may evolve as development progresses.
 
-Convenções:
+### Conventions:
+- ✅ = Implemented and tested  
+- 🔄 = In development  
+- 📋 = Planned / Backlog  
+- ❌ = Cancelled / Replaced  
 
-✅ = Implementado e testado
+---
 
-🔄 = Em desenvolvimento
+## 📅 UPDATE TIMELINE
 
-📋 = Planejado/Backlog
+### **November 2024 – Version 1.1**  
+**Critical Change**: Replacement of SQL Server with **PostgreSQL**  
+- **Reason**: Full alignment with open-source philosophy and GPLv3  
+- **Impact**: Elimination of licensing costs, improved portability  
+- **Target System**: **Fedora 43 (official release, 2025)**  
 
-❌ = Cancelado/Substituído
+### **October 2024 – Version 1.0**  
+- Creation of the central reference document  
+- Consolidation of full architecture and philosophy  
+- Establishment of the official roadmap  
+- Definition of the **4 non-negotiable principles**
+
+---
 
-📅 LINHA DO TEMPO DE ATUALIZAÇÕES
-Novembro 2024 - Versão 1.1
-Mudança crítica: Substituição de SQL Server por PostgreSQL
+## 🎯 FUNDAMENTAL PRINCIPLES (IMMUTABLE)
 
-Motivo: Alinhamento completo com filosofia open source e GPLv3
+### 1. **Determinism over Magic**  
+✅ **Status**: Principle established  
+📝 **Implementation**: All code follows the **intent → validation → execution → audit** pattern.
 
-Impacto: Redução de custos de licenciamento, aumento da portabilidade
+### 2. **Auditability over Convenience**  
+✅ **Status**: Principle established  
+📝 **Implementation**: Structured logs stored in PostgreSQL; no "silent" operations.
 
-Sistema alvo: Fedora 43 (oficial, 2025)
+### 3. **Fallback over Dependency**  
+✅ **Status**: Principle established  
+📝 **Implementation**: Every optional component has a clean removal path.
+
+### 4. **Human Authority over Automation**  
+✅ **Status**: Principle established  
+📝 **Implementation**: No unauthorized auto-remediation is permitted.
+
+---
 
-Outubro 2024 - Versão 1.0
-Criação do documento de referência central
-
-Consolidação de toda arquitetura e filosofia
-
-Estabelecimento do roadmap oficial
-
-Definição dos 4 princípios não negociáveis
-
-🎯 PRINCÍPIOS FUNDAMENTAIS (IMUTÁVEIS)
-1. Determinismo sobre Mágica
-✅ Status: Princípio estabelecido
-📝 Implementação: Todo código segue padrão intenção→validação→execução→auditoria
-
-2. Auditabilidade sobre Conveniência
-✅ Status: Princípio estabelecido
-📝 Implementação: Logs estruturados em PostgreSQL, sem operações "silenciosas"
-
-3. Fallback sobre Dependência
-✅ Status: Princípio estabelecido
-📝 Implementação: Cada componente opcional tem caminho de remoção limpo
-
-4. Autoridade Humana sobre Automação
-✅ Status: Princípio estabelecido
-📝 Implementação: Nenhuma auto-remediação não autorizada
-
-🏗️ STATUS DE IMPLEMENTAÇÃO POR CAMADA
-Camada 1: UI e Orquestração
-🔄 Status: Em desenvolvimento inicial
-📅 Progresso: 15%
-📋 Próximos passos:
-
-Setup Spring Boot + Tailwind
-
-Autenticação básica
-
-Primeiro dashboard
-
-Camada 2: Serviço Python Central
-🔄 Status: Estrutura definida
-📅 Progresso: 10%
-📋 Próximos passos:
-
-Esqueleto dos módulos principais
-
-Comunicação com PostgreSQL
-
-Sistema de logging unificado
-
-Camada 3: Banco de Dados PostgreSQL ✅ ATUALIZADO
-📋 Status: Schema projetado para PostgreSQL
-📅 Progresso: 20%
-📋 Especificações:
-
-Versão: PostgreSQL 18+ (Fedora 43)
-
-Extensões: timescaledb, pg_stat_statements, pgcrypto
-
-Schemas: astral_core (configurações), astral_telemetry (métricas)
-
-Backup: pg_dump + WAL archiving nativo
-
-Camada 4: Network (NetworkManager)
-✅ Status: Implementado em POC
-📝 Notas: Funcionalidades básicas testadas via Python
-
-Camada 5: Firewall (iptables/nftables)
-✅ Status: Implementado em POC
-📝 Notas: Regras básicas funcionais, falta integração com UI
-
-Camada 6: Identidade (Samba AD DC)
-✅ Status: Implementado em POC
-📝 Notas: Domínio básico funcionando, falta automatização completa
-
-Camada 7: DNS Híbrido (Pi-hole + AD)
-✅ Status: Implementado em POC
-📝 Notas: Funcionando em ambiente isolado
-
-Camada 8: Hypervisor (KVM/libvirt)
-📋 Status: Planejado
-📅 Progresso: 0%
-
-Camada 9: Compatibilidade Citrix CVAD
-📋 Status: Definido (não incluído)
-📝 Notas: Será apenas interface de configuração se fornecido pelo usuário
-
-Camada 10: Sistema de Pacotes
-📋 Status: Em design
-📅 Progresso: 2%
-
-Camada 11: Observabilidade
-📋 Status: Em design
-📅 Progresso: 3%
-
-🔄 ROADMAP DINÂMICO
-M0 – Núcleo do Sistema (ATUAL)
-Prazo estimado: Nov 2024 - Jan 2025
-Progresso: 30%
-
-Tarefas:
-
-Definir arquitetura completa
-
-Estabelecer princípios fundamentais
-
-Decisão de mudança para PostgreSQL ✅
-
-Setup ambiente desenvolvimento Spring Boot
-
-Schema inicial PostgreSQL
-
-Serviço Python base
-
-M1 – Firewall/NAT + NetworkManager
-Prazo estimado: Fev 2025 - Mar 2025
-Progresso: 0%
-
-M2 – AD + DNS Híbrido
-Prazo estimado: Abr 2025 - Mai 2025
-Progresso: 0%
-
-[Roadmap continuará sendo atualizado conforme progresso]
-
-🐛 REGISTRO DE DECISÕES ARQUITETURAIS
-[Nov 2024] - Decisão: PostgreSQL como banco primário
-Contexto: Necessidade de ACID para transações de infraestrutura com licenciamento aberto
-Alternativas consideradas: SQL Server, MySQL, SQLite
-Decisão anterior: SQL Server pela integração com ecossistema Microsoft
-Nova decisão: PostgreSQL por ser open source, maduro e compatível com GPLv3
-Razões para mudança:
-
-Alinhamento completo com filosofia de software livre
-
-Eliminação de custos de licenciamento
-
-Maior portabilidade entre ambientes (cloud, on-prem, híbrido)
-
-Comunidade ativa e ecossistema robusto
-Consequências:
-
-✅ Zero custos de licenciamento
-
-✅ Compatibilidade total com GPLv3
-
-✅ Portabilidade máxima
-
-🔄 Necessidade de adaptar alguns recursos específicos
-
-[Out 2024] - Decisão: Python como núcleo de execução
-Contexto: Necessidade de linguagem para sysadmin com bibliotecas maduras
-Alternativas consideradas: Go, Rust, Java
-Decisão: Python pela maturidade em automação de sistemas
-Consequências: Performance aceitável, fácil prototipagem
-
-[Out 2024] - Decisão: GPLv3 para licenciamento
-Contexto: Garantir liberdade do software
-Alternativas: Apache 2.0, MIT, AGPL
-Decisão: GPLv3 para proteger contra enclausuramento
-Consequências: Contribuições devem ser GPLv3 compatíveis
-
-📊 ESPECIFICAÇÕES TÉCNICAS ATUALIZADAS
-Ambiente de Desenvolvimento Oficial
-Sistema Operacional: Fedora 43 Workstation/Server
-
-Arquitetura: x86_64
-
-Memória Mínima: 4GB RAM
-
-Armazenamento: 25GB mínimo
-
-Stack Tecnológica
-text
-Backend Principal: Python 3.12+
-- Módulos: psycopg2, sqlalchemy, flask (para APIs internas)
-- Framework: Custom (não Django/Flask para o core)
-
-UI/Orquestração: Spring Boot 3.2+
-- Template Engine: Thymeleaf
-- CSS Framework: Tailwind CSS
-- Autenticação: Spring Security + Samba AD
-
-Banco de Dados: PostgreSQL 18+
-- Extensões: timescaledb, pg_stat_statements, pgcrypto
-- Pooling: HikariCP (Spring) / psycopg2.pool (Python)
-
-Rede/Sistema:
-- Network Manager: nmcli/dbus (via Python)
-- Firewall: iptables/nftables (Python wrapper)
-- Virtualização: KVM/libvirt (Python binding)
-- Identidade: Samba 4.20+ (AD DC)
-Configuração PostgreSQL para Fedora 43
-bash
-# Instalação mínima
+## 🏗️ IMPLEMENTATION STATUS BY LAYER
+
+| Layer | Component | Status | Progress | Next Steps |
+|------|----------|--------|----------|-----------|
+| **1** | UI & Orchestration | 🔄 In early development | 15% | Spring Boot + Tailwind setup, basic auth, first dashboard |
+| **2** | Core Python Service | 🔄 Structure defined | 10% | Module skeleton, PostgreSQL integration, unified logging |
+| **3** | **PostgreSQL Database** | ✅ **Updated** | 20% | Schema design complete (astral_core, astral_telemetry), extensions: timescaledb, pgcrypto |
+| **4** | Network (NetworkManager) | ✅ POC implemented | — | Basic Python-controlled functionality tested |
+| **5** | Firewall (iptables/nftables) | ✅ POC implemented | — | Basic rules working; UI integration pending |
+| **6** | Identity (Samba AD DC) | ✅ POC implemented | — | Basic domain functional; full automation pending |
+| **7** | Hybrid DNS (Pi-hole + AD) | ✅ POC implemented | — | Working in isolated environment |
+| **8** | Hypervisor (KVM/libvirt) | 📋 Planned | 0% | — |
+| **9** | Citrix CVAD Compatibility | 📋 Defined (not included) | — | Will only provide configuration interface if user supplies Citrix |
+| **10** | Package System | 📋 In design | 2% | — |
+| **11** | Observability | 📋 In design | 3% | — |
+
+---
+
+## 🔄 DYNAMIC ROADMAP
+
+### **M0 – Core System (CURRENT)**  
+**Estimated Timeline**: Nov 2024 – Jan 2025  
+**Progress**: 30%  
+
+**Completed Tasks**:  
+- Full architecture defined  
+- Fundamental principles established  
+- PostgreSQL migration decision ✅  
+- Spring Boot dev environment setup  
+- Initial PostgreSQL schema  
+- Base Python service  
+
+### **M1 – Firewall/NAT + NetworkManager**  
+**Estimated Timeline**: Feb 2025 – Mar 2025  
+**Progress**: 0%  
+
+### **M2 – AD + Hybrid DNS**  
+**Estimated Timeline**: Apr 2025 – May 2025  
+**Progress**: 0%  
+
+> *(Roadmap will be updated continuously as work progresses)*
+
+---
+
+## 🐛 ARCHITECTURAL DECISION LOG
+
+### **[Nov 2024] Decision: PostgreSQL as Primary Database**  
+**Context**: Need for ACID-compliant infrastructure transactions with open licensing.  
+**Alternatives Considered**: SQL Server, MySQL, SQLite  
+**Previous Decision**: SQL Server (for Microsoft ecosystem integration)  
+**New Decision**: **PostgreSQL** (open source, mature, GPLv3-compatible)  
+
+**Reasons for Change**:  
+- Full alignment with free software philosophy  
+- Zero licensing costs  
+- Maximum portability (cloud, on-prem, hybrid)  
+- Active community and robust ecosystem  
+
+**Consequences**:  
+- ✅ Zero licensing costs  
+- ✅ Full GPLv3 compliance  
+- ✅ Maximum portability  
+- 🔄 Requires adaptation of some proprietary features  
+
+---
+
+### **[Oct 2024] Decision: Python as Core Execution Language**  
+**Context**: Need for a sysadmin-friendly language with mature libraries.  
+**Alternatives Considered**: Go, Rust, Java  
+**Decision**: **Python** — mature ecosystem for system automation  
+**Consequences**: Acceptable performance, rapid prototyping  
+
+### **[Oct 2024] Decision: GPLv3 Licensing**  
+**Context**: Guarantee software freedom and prevent vendor lock-in.  
+**Alternatives Considered**: Apache 2.0, MIT, AGPL  
+**Decision**: **GPLv3** — strongest protection against proprietary enclosure  
+**Consequences**: All contributions must be GPLv3-compatible  
+
+---
+
+## 📊 UPDATED TECHNICAL SPECIFICATIONS
+
+### **Official Development Environment**
+- **OS**: Fedora 43 Workstation / Server  
+- **Architecture**: x86_64  
+- **Minimum RAM**: 4 GB  
+- **Storage**: 25 GB minimum  
+
+### **Technology Stack**
+```text
+Core Backend: Python 3.12+
+  - Modules: psycopg2, sqlalchemy, flask (internal APIs)
+  - Framework: Custom (no Django/Flask for core)
+
+UI/Orchestration: Spring Boot 3.2+
+  - Template Engine: Thymeleaf
+  - CSS Framework: Tailwind CSS
+  - Authentication: Spring Security + Samba AD
+
+Database: PostgreSQL 18+
+  - Extensions: timescaledb, pg_stat_statements, pgcrypto
+  - Connection Pooling: HikariCP (Spring) / psycopg2.pool (Python)
+
+System Integration:
+  - Network: NetworkManager (nmcli/dbus via Python)
+  - Firewall: iptables/nftables (Python wrapper)
+  - Virtualization: KVM/libvirt (Python bindings)
+  - Identity: Samba 4.20+ (AD Domain Controller)
+```
+
+### **PostgreSQL Setup for Fedora 43**
+```bash
+# Minimal installation
 sudo dnf install postgresql-server postgresql-contrib
 sudo postgresql-setup --initdb
 sudo systemctl enable --now postgresql
 
-# Configuração de acesso (pg_hba.conf)
+# Access configuration (pg_hba.conf)
 # host    all    all    127.0.0.1/32    scram-sha-256
-📈 PRÓXIMOS MILESTONES
-Milestone 1: Primeiro Commit Público
-Critérios de conclusão:
+```
 
-UI básica funcionando (Spring Boot)
+---
 
-Serviço Python respondendo
+## 📈 UPCOMING MILESTONES
 
-PostgreSQL com schema mínimo
+### **Milestone 1: First Public Commit**  
+**Target Date**: January 2025  
+**Completion Criteria**:  
+- Basic working UI (Spring Boot)  
+- Python service responding to requests  
+- PostgreSQL with minimal schema  
+- Initial documentation  
+- GPLv3 license applied  
 
-Documentação inicial
+### **Milestone 2: Functional MVP**  
+**Target Date**: June 2025  
+**Completion Criteria**:  
+- End-to-end flow: UI → Python → PostgreSQL → UI  
+- Basic firewall configuration via UI  
+- Working AD authentication  
+- 3 installable core packages  
 
-Licença GPLv3 aplicada
+---
 
-Data alvo: Janeiro 2025
+## ⚠️ KNOWN LIMITATIONS AND RESTRICTIONS
 
-Milestone 2: MVP Funcional
-Critérios:
+### **Current Restrictions**
+- ❌ **No Docker support**: Native installation only (Fedora/RHEL)  
+- ❌ **No Citrix VDI included**: Only config compatibility if user provides Citrix  
+- ⚠️ **Minimum 4 GB RAM** required for basic operation  
+- 🔧 **Nested virtualization required** for development environments  
 
-Fluxo completo UI→Python→PostgreSQL→UI
+### **Critical Dependencies**
+- PostgreSQL 18+ (Fedora 43 official repos)  
+- Python 3.12+ (Fedora 43 default)  
+- Samba 4.20+ (for AD DC)  
+- Linux Kernel 6.8+ (Fedora 43 default)
 
-Firewall básico via UI
+---
 
-Autenticação AD funcionando
+## 🔍 MONITORING AND METRICS
 
-3 pacotes básicos instaláveis
+### **Project Metrics (To Be Tracked)**
+- **Code**: Lines of code, commits, active branches  
+- **Testing**: Test coverage %, automated test count  
+- **Performance Targets**:  
+  - Commit latency: < 100 ms  
+  - Telemetry throughput: > 50k events/sec  
+  - Audit query time (last 30 days): < 1 sec  
 
-Data alvo: Junho 2025
+---
 
-⚠️ LIMITAÇÕES E RESTRIÇÕES CONHECIDAS
-Restrições Atuais
-Não suporta Docker: Instalação apenas nativa no Fedora/RHEL
+## 🤝 COLLABORATION MODEL
 
-Não inclui VDI Citrix: Apenas compatibilidade se fornecido pelo usuário
+### **For Developers**
+- Fork the repository (when public)  
+- Consult this document for architectural context  
+- Adhere to the four fundamental principles  
+- Document decisions in the relevant section  
 
-Requisito mínimo: 4GB RAM para operação básica
+### **For Testers / Users**
+- Report issues with clear use-case scenarios  
+- Document desired workflows  
+- Provide UX feedback  
 
-Virtualização: Requer suporte de virtualização aninhada para desenvolvimento
+### **For Researchers**
+- This document may be cited as a reference  
+- Contact for academic collaboration  
+- Suitable for infrastructure/systems coursework  
 
-Dependências Críticas
-PostgreSQL 18+ (Fedora 43 repositórios oficiais)
+---
 
-Python 3.12+ (Fedora 43 padrão)
+## 📚 REFERENCES AND LINKS
 
-Samba 4.20+ (para AD DC)
+### **Official Documentation**
+- Main Repository: [LINK TBD – GitHub/GitLab]  
+- Project Wiki: [LINK TBD]  
+- Issue Tracker: [LINK TBD]  
 
-Kernel Linux 6.8+ (Fedora 43 padrão)
+### **Technologies Used**
+- PostgreSQL: https://www.postgresql.org/docs/18/  
+- Spring Boot: https://spring.io/projects/spring-boot  
+- Python: https://docs.python.org/3/  
+- Samba: https://wiki.samba.org/  
+- Fedora: https://docs.fedoraproject.org/  
 
-🔍 MONITORAMENTO E MÉTRICAS
-Métricas do Projeto (a serem coletadas)
-Código:
+### **Related Documentation**
+- Original Thesis (2005): [REFERENCE – 2005 work on open-source software]  
+- Design Philosophy: Section 2 of this document  
+- API Reference: [LINK TBD – when available]
 
-Linhas de código: [A DEFINIR]
+---
 
-Commits: [A DEFINIR]
+## 🏷️ DOCUMENT VERSION HISTORY
 
-Branches ativos: [A DEFINIR]
+| Version | Date       | Key Changes                          | Author               |
+|--------|------------|--------------------------------------|----------------------|
+| 1.0    | Oct 2024   | Initial document creation            | Euripedes Batista    |
+| 1.1    | Nov 2024   | PostgreSQL migration, Fedora 43 spec | Euripedes Batista    |
+| 1.2    | [FUTURE]   | [TO BE DEFINED]                      | [TO BE DEFINED]      |
 
-Testes:
+---
 
-Cobertura atual: [A DEFINIR]
+## 🚨 FINAL WARNING
 
-Testes automatizados: [A DEFINIR]
+This is a **living development document**.  
 
-Performance Alvo:
+All specifications, architecture, and documented decisions are **subject to change without notice**. This document reflects the current state of thinking and development for the **Astral HV-NGFW** project, but **does not constitute a final commitment** to any specific implementation.
 
-Latência de commit: < 100ms
-
-Throughput de telemetria: > 50k eventos/segundo
-
-Tempo de query de auditoria: < 1s (últimos 30 dias)
-
-🤝 MODELO DE COLABORAÇÃO
-Para Desenvolvedores
-Fork do repositório (quando disponível)
-
-Consulte este documento para contexto arquitetural
-
-Siga os princípios fundamentais em todas as contribuições
-
-Documente decisões na seção correspondente
-
-Para Testadores/Usuários
-Reporte issues com cenários de uso claros
-
-Documente workflows desejados
-
-Forneça feedback sobre experiência de usuário
-
-Para Pesquisadores
-Este documento pode ser citado como referência
-
-Contate para colaborações em papers acadêmicos
-
-Use em disciplinas de infraestrutura e sistemas
-
-📚 REFERÊNCIAS E LINKS
-Documentação Oficial
-Repositório principal: [LINK A DEFINIR - GitHub/GitLab]
-
-Wiki do projeto: [LINK A DEFINIR]
-
-Sistema de issues: [LINK A DEFINIR]
-
-Tecnologias Utilizadas
-PostgreSQL: https://www.postgresql.org/docs/18/
-
-Spring Boot: https://spring.io/projects/spring-boot
-
-Python: https://docs.python.org/3/
-
-Samba: https://wiki.samba.org/
-
-Fedora: https://docs.fedoraproject.org/
-
-Documentação Relacionada
-Monografia original (2005): [REFERÊNCIA - trabalho de 2005 sobre software aberto]
-
-Filosofia de design: Seção 2 deste documento
-
-API Reference: [LINK A DEFINIR - quando disponível]
-
-🏷️ VERSIONAMENTO DESTE DOCUMENTO
-Versão	Data	Mudanças Principais	Autor
-1.0	Out 2024	Criação inicial do documento	Euripedes Batista
-1.1	Nov 2024	Mudança para PostgreSQL, especificação Fedora 43	Euripedes Batista
-1.2	[FUTURO]	[A DEFINIR]	[A DEFINIR]
-🚨 AVISO FINAL
-Este é um documento de atualização em desenvolvimento ativo.
-
-As especificações, arquitetura e decisões documentadas aqui estão sujeitas a mudanças sem aviso prévio. Este documento representa o estado atual do pensamento e desenvolvimento do projeto Astral HV-NGFW, mas não constitui um compromisso final com qualquer implementação específica.
-
-O desenvolvimento de software open source é um processo iterativo e colaborativo. Encorajamos feedback e contribuições, mas pedimos compreensão de que elementos podem ser alterados, refinados ou mesmo abandonados conforme o projeto evolui.
-
+Open-source software development is an **iterative and collaborative process**. We welcome feedback and contributions, but ask for your understanding that elements may be **modified, refined, or even abandoned** as the project evolves.

@@ -24,13 +24,13 @@ This document serves as the central technical reference and changelog for the **
 
 ## 📅 UPDATE TIMELINE
 
-### **November 2024 – Version 1.1**  
+### **DECEMBER 18 2025 – Version 0.1**  
 **Critical Change**: Replacement of SQL Server with **PostgreSQL**  
 - **Reason**: Full alignment with open-source philosophy and GPLv3  
 - **Impact**: Elimination of licensing costs, improved portability  
 - **Target System**: **Fedora 43 (official release, 2025)**  
 
-### **October 2024 – Version 1.0**  
+### **DECEMBER 20 2025 – Version 1.0**  
 - Creation of the central reference document  
 - Consolidation of full architecture and philosophy  
 - Establishment of the official roadmap  
@@ -79,7 +79,7 @@ This document serves as the central technical reference and changelog for the **
 ## 🔄 DYNAMIC ROADMAP
 
 ### **M0 – Core System (CURRENT)**  
-**Estimated Timeline**: Nov 2024 – Jan 2025  
+**Estimated Timeline**: December 2025 – June 2026  
 **Progress**: 30%  
 
 **Completed Tasks**:  
@@ -124,13 +124,13 @@ This document serves as the central technical reference and changelog for the **
 
 ---
 
-### **[Oct 2024] Decision: Python as Core Execution Language**  
+### **[DECEMBER, 1 2025] Decision: Python as Core Execution Language**  
 **Context**: Need for a sysadmin-friendly language with mature libraries.  
 **Alternatives Considered**: Go, Rust, Java  
 **Decision**: **Python** — mature ecosystem for system automation  
 **Consequences**: Acceptable performance, rapid prototyping  
 
-### **[Oct 2024] Decision: GPLv3 Licensing**  
+### **[DECEMBER 9] Decision: GPLv3 Licensing**  
 **Context**: Guarantee software freedom and prevent vendor lock-in.  
 **Alternatives Considered**: Apache 2.0, MIT, AGPL  
 **Decision**: **GPLv3** — strongest protection against proprietary enclosure  
@@ -184,7 +184,7 @@ sudo systemctl enable --now postgresql
 ## 📈 UPCOMING MILESTONES
 
 ### **Milestone 1: First Public Commit**  
-**Target Date**: January 2025  
+**Target Date**: may 2026
 **Completion Criteria**:  
 - Basic working UI (Spring Boot)  
 - Python service responding to requests  
@@ -275,8 +275,8 @@ sudo systemctl enable --now postgresql
 
 | Version | Date       | Key Changes                          | Author               |
 |--------|------------|--------------------------------------|----------------------|
-| 1.0    | Oct 2024   | Initial document creation            | Euripedes Batista    |
-| 1.1    | Nov 2024   | PostgreSQL migration, Fedora 43 spec | Euripedes Batista    |
+| 1.0    | DEC 2025   | Initial document creation            | Euripedes Batista    |
+| 1.1    | DEC 2025   | PostgreSQL migration, Fedora 43 spec | Euripedes Batista    |
 | 1.2    | [FUTURE]   | [TO BE DEFINED]                      | [TO BE DEFINED]      |
 
 ---

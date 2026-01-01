@@ -4,7 +4,7 @@ Abstract
 
 Astral HCI-NGFW is an open, auditable and intent-driven Hyperconverged Infrastructure (HCI) platform that treats networking, security and identity as first-class infrastructure primitives, not auxiliary services.
 
-Astral unifies compute (VMs and containers), network, firewall, identity, and DNS into a single converged fabric, governed by a deterministic reconciliation engine and operated through explicit intents, approvals, and rollback—grounded in deep Linux firewall mastery, advanced Active Directory forensics across Windows and Samba AD, and production-grade Samba Active Directory deployment with hybrid DNS and GPO support.
+Astral unifies compute (VMs and containers), network, firewall, identity, DNS, and observability into a single converged fabric, governed by a deterministic reconciliation engine and operated through explicit intents, approvals, and rollback—grounded in deep Linux firewall mastery, advanced Active Directory forensics across Windows and Samba AD, production-grade Samba Active Directory deployment with hybrid DNS and GPO support, and full-stack metrics, logs, and distributed tracing for real-time monitoring and analysis.
 
 The project is released under the GNU General Public License v2.0 (GPLv2), ensuring long-term freedom, transparency and resistance to vendor lock-in.
 

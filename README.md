@@ -1,4 +1,4 @@
-Astral HCI-NGFW
+Astral Plataform & HCI
 Abstract
 
 Astral HCI-NGFW is an open, auditable and intent-driven Hyperconverged Infrastructure (HCI) platform that treats networking, security and identity as first-class infrastructure primitives, not auxiliary services.
